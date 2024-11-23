@@ -1,5 +1,5 @@
 /**
- * THIS IS AN EXAMPLE OF A COMMAND WITH ARGUMENTS
+ * EXAMPLE OF A COMMAND WITH ARGUMENTS
  */
 
 import handler, { CommandArg } from "../../API/Command/manager";

@@ -21,6 +21,7 @@ export declare type CommandArgDefinition = {
   min?: number;
   max?: number;
   self?: boolean
+  relative?: boolean;
   float?: boolean;
   minLength?: number;
   maxLength?: number;
@@ -46,13 +47,14 @@ export class CommandArg {
   min?: number;
   max?: number;
   self?: boolean
+  relative?: boolean;
   float?: boolean
   minLength?: number;
   maxLength?: number;
   matches?: RegExp
   subArgs?: Record<string, CommandArgDefinition[]>
 
-  constructor({ name, type, required, values, min, max, self, float, minLength, maxLength, matches, subArgs }: CommandArgDefinition) {
+  constructor({ name, type, required, values, min, max, self, relative, float, minLength, maxLength, matches, subArgs }: CommandArgDefinition) {
     this.name = name
     this.type = type
     this.required = required
@@ -60,13 +62,17 @@ export class CommandArg {
     this.min = min
     this.max = max
     this.self = self
+    this.relative = relative
     this.subArgs = subArgs
     this.float = float
+    this.minLength = minLength
+    this.maxLength = maxLength
+    this.matches = matches
   }
 
   /**
    * Crates a literal argument type
-   * @param name 
+   * @param name The name of the argument
    * @param required 
    * @param values 
    * @param subArgs 
@@ -82,6 +88,7 @@ export class CommandArg {
        min: undefined, 
        max: undefined, 
        self: undefined, 
+       relative: undefined,
        float: undefined, 
        minLength: undefined, 
        maxLength: undefined, 
@@ -92,8 +99,11 @@ export class CommandArg {
 
   /**
    * Crates a string argument type
-   * @param name 
+   * @param name The name of the argument
    * @param required 
+   * @param minLength The minimum length required for the string
+   * @param maxLength The maximum length required for the string
+   * @param matches The regular expression this string must match
    * @param subArgs 
    * @returns 
    * @remarks Use ```interaction.getString(argName)``` to get this argument
@@ -106,7 +116,8 @@ export class CommandArg {
       values: undefined, 
       min: undefined, 
       max: undefined, 
-      self: undefined, 
+      self: undefined,
+      relative: undefined, 
       float: undefined, 
       minLength, 
       maxLength, 
@@ -117,10 +128,10 @@ export class CommandArg {
 
   /**
    * Crates a number argument type
-   * @param name 
+   * @param name The name of the argument
    * @param required 
-   * @param min 
-   * @param max 
+   * @param min Minimum numeric value for this argument
+   * @param max Maximum numeric value for this argument
    * @param subArgs 
    * @returns 
    * @remarks Use ```interaction.getInteger(argName)``` or ```interaction.getFloat(argName)``` to get this argument
@@ -134,6 +145,7 @@ export class CommandArg {
        min, 
        max, 
        self: undefined, 
+       relative: undefined,
        float, 
        minLength: undefined, 
        maxLength: undefined, 
@@ -144,7 +156,7 @@ export class CommandArg {
 
   /**
    * Crates a boolean argument type
-   * @param name 
+   * @param name The name of the argument
    * @param required 
    * @param subArgs 
    * @returns 
@@ -159,6 +171,7 @@ export class CommandArg {
        min: undefined, 
        max: undefined, 
        self: undefined, 
+       relative: undefined,
        float: undefined, 
        minLength: undefined, 
        maxLength: undefined, 
@@ -169,9 +182,9 @@ export class CommandArg {
 
   /**
    * Crates a player argument type
-   * @param name 
+   * @param name The name of the argument
    * @param required 
-   * @param self 
+   * @param self If set to true you can target yourself with this argument
    * @param subArgs 
    * @returns 
    * @remarks Use ```interaction.getPlayer(argName)``` to get this argument
@@ -185,6 +198,7 @@ export class CommandArg {
       min: undefined, 
       max: undefined, 
       self, 
+      relative: undefined,
       float: undefined, 
       minLength: undefined, 
       maxLength: undefined, 
@@ -195,7 +209,7 @@ export class CommandArg {
 
   /**
    * Creates a time argument type
-   * @param name 
+   * @param name The name of the argument
    * @param required 
    * @param subArgs 
    * @returns
@@ -210,6 +224,7 @@ export class CommandArg {
        min: undefined, 
        max: undefined, 
        self: undefined, 
+       relative: undefined,
        float: undefined, 
        minLength: undefined, 
        maxLength: undefined, 
@@ -220,20 +235,20 @@ export class CommandArg {
 
   /**
    * Creates a position argument type
-   * @param name 
+   * @param name The name of the argument
    * @param required 
-   * @param relative 
+   * @param relative If set to true you can use relative values for this argument
    * @param subArgs 
    * @returns
    * @remarks This method will retrun three arguments in the format argNameX, argNameY, argNameZ
    * @remarks Remember to use the spread operator when using this function because it returns an array of arguments.
    * @remarks To get this argument as Vector3 you must use ```interaction.getPosition(argName)```
    */
-  static position(name: string, required: true, subArgs?: Record<string, CommandArg[]>) {
+  static position(name: string, required: true, relative: boolean = true, subArgs?: Record<string, CommandArg[]>) {
     return [
-      new CommandArg({ name: `${name}X`, type: 'positionX', required, values: undefined, min: undefined, max: undefined, self: undefined, float: undefined, minLength: undefined, maxLength: undefined, matches: undefined, subArgs }),
-      new CommandArg({ name: `${name}Y`, type: 'positionY', required, values: undefined, min: undefined, max: undefined, self: undefined, float: undefined, minLength: undefined, maxLength: undefined, matches: undefined, subArgs }),
-      new CommandArg({ name: `${name}Z`, type: 'positionZ', required, values: undefined, min: undefined, max: undefined, self: undefined, float: undefined, minLength: undefined, maxLength: undefined, matches: undefined, subArgs })
+      new CommandArg({ name: `${name}X`, type: 'positionX', required, values: undefined, min: undefined, max: undefined, self: undefined, relative: relative, float: undefined, minLength: undefined, maxLength: undefined, matches: undefined, subArgs }),
+      new CommandArg({ name: `${name}Y`, type: 'positionY', required, values: undefined, min: undefined, max: undefined, self: undefined, relative: relative, float: undefined, minLength: undefined, maxLength: undefined, matches: undefined, subArgs }),
+      new CommandArg({ name: `${name}Z`, type: 'positionZ', required, values: undefined, min: undefined, max: undefined, self: undefined, relative: relative, float: undefined, minLength: undefined, maxLength: undefined, matches: undefined, subArgs })
     ]
   }
 }
@@ -458,6 +473,8 @@ class CommandHandler {
     const { type } = arg
     switch (type) {
       case "string":
+        if (arg?.minLength && value?.length < arg.minLength) throw new Error(`Argument ${arg.name} requires a minimum length of ${arg.minLength}`);
+        if (arg?.maxLength && value?.length > arg.maxLength) throw new Error(`Argument ${arg.name} requires a maximum length of ${arg.maxLength}`);
         return value;
       case "number":
         const num = Number(value);
@@ -503,23 +520,91 @@ class CommandHandler {
         return value
 
       case 'positionX': {
-        const absoluteValue = Number(value);
-        if (isNaN(absoluteValue)) throw new Error(`Argument ${arg.name} must be of type position`);
-        return absoluteValue;
+          if (value.includes('~') && !arg?.relative)
+            throw new Error(`Argument ${arg.name} cannot be a relative location`);
+        
+          let absoluteValue = 0;
+        
+          if (value.includes('~')) {
+            if (value === '~') {
+              absoluteValue = ctx.location.x;
+            } else {
+              const relative = value.slice(1);
+              if (relative === '') {
+                absoluteValue = ctx.location.x;
+              } else if (!isNaN(Number(relative))) {
+                absoluteValue = ctx.location.x + Number(relative);
+              } else {
+                throw new Error(`Argument ${arg.name} must be a valid relative position`);
+              }
+            }
+          } else if (!isNaN(Number(value))) {
+            absoluteValue = Number(value);
+          } else {
+            throw new Error(`Argument ${arg.name} must be of type position`);
+          }
+        
+          return absoluteValue;
       }
+        
 
       case 'positionY': {
-        const absoluteValue = Number(value);
-        if (isNaN(absoluteValue)) throw new Error(`Argument ${arg.name} must be of type position`);
+        if (value.includes('~') && !arg?.relative)
+          throw new Error(`Argument ${arg.name} cannot be a relative location`);
+      
+        let absoluteValue = 0;
+      
+        if (value.includes('~')) {
+          if (value === '~') {
+            absoluteValue = ctx.location.y;
+          } else {
+            const relative = value.slice(1);
+            if (relative === '') {
+              absoluteValue = ctx.location.y;
+            } else if (!isNaN(Number(relative))) {
+              absoluteValue = ctx.location.y + Number(relative);
+            } else {
+              throw new Error(`Argument ${arg.name} must be a valid relative position`);
+            }
+          }
+        } else if (!isNaN(Number(value))) {
+          absoluteValue = Number(value);
+        } else {
+          throw new Error(`Argument ${arg.name} must be of type position`);
+        }
+      
         return absoluteValue;
-      }
+    }
 
-      case 'positionZ': {
-        const absoluteValue = Number(value);
-        if (isNaN(absoluteValue)) throw new Error(`Argument ${arg.name} must be of type position`);
-        return absoluteValue;
+    case 'positionZ': {
+      if (value.includes('~') && !arg?.relative)
+        throw new Error(`Argument ${arg.name} cannot be a relative location`);
+    
+      let absoluteValue = 0;
+    
+      if (value.includes('~')) {
+        if (value === '~') {
+          absoluteValue = ctx.location.z;
+        } else {
+          const relative = value.slice(1);
+          if (relative === '') {
+            absoluteValue = ctx.location.z;
+          } else if (!isNaN(Number(relative))) {
+            absoluteValue = ctx.location.z + Number(relative);
+          } else {
+            throw new Error(`Argument ${arg.name} must be a valid relative position`);
+          }
+        }
+      } else if (!isNaN(Number(value))) {
+        absoluteValue = Number(value);
+      } else {
+        throw new Error(`Argument ${arg.name} must be of type position`);
       }
-      default:
+    
+      return absoluteValue;
+    }
+
+    default:
         throw new Error(`Unsupported argument type: ${type}`);
     }
   }

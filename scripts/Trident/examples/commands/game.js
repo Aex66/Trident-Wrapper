@@ -1,5 +1,5 @@
 /**
- * THIS IS AN EXAMPLE OF AN ADVANCED COMMAND WITH SUBGROUPS AND ARGS
+ * EXAMPLE OF AN ADVANCED COMMAND WITH SUBGROUPS AND ARGS
  */
 import handler, { CommandArg } from "../../API/Command/manager";
 import config from "../../config";

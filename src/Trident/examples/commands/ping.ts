@@ -1,5 +1,5 @@
 /**
- * This is an example of a basic command
+ * EXAMPLE OF A BASIC COMMAND
  */
 import handler from "../../API/Command/manager"
 

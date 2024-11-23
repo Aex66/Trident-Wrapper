@@ -1,5 +1,5 @@
 /**
- * This is an example of a command that opens an action form
+ * EXAMPLE OF A COMMAND THAT OPENS A FORM
  */
 import handler from "../../API/Command/manager"
 import { ActionForm } from "../../API/Form/ActionForm"
