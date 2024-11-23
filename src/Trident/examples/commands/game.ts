@@ -2,6 +2,7 @@
  * THIS IS AN EXAMPLE OF AN ADVANCED COMMAND WITH SUBGROUPS AND ARGS
  */
 import handler, { CommandArg, CommandInteraction } from "../../API/Command/manager";
+import config from "../../config";
 
 handler.registerCommand({
     name: 'game',
@@ -33,6 +34,10 @@ handler.registerCommand({
         })
     ],
 
+    requires(player) {
+        return player.hasTag(config.adminTag)
+    },
+    
     execute(interaction) {
         const gameId = interaction.getString('gameId') as 'eggwars' | 'skywars'
 
