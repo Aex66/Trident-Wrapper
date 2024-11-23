@@ -1,0 +1,36 @@
+{
+    "format_version": 2,
+    "header": {
+        "name": "§bTrident Wrapper",
+        "description": "§7- Trident Studios",
+        "uuid": "6359c63e-a17d-4ce9-b989-ee3597717868",
+        "version": [ 1, 0, 0 ],
+        "min_engine_version": [ 1, 19, 50 ]
+    },
+    "modules": [
+        {
+            "type": "data",
+            "uuid": "bc37b198-9f0f-417b-8de8-94525cac8eb5",
+            "version": [ 1, 0, 0 ]
+        },
+        {
+            "description": "Javascript module",
+            "type": "script", 
+            "language": "javascript",
+            "uuid": "ef687c76-bc91-471a-bda2-e9ca8353bcc5",
+            "version": [ 0, 0, 1 ],
+            "entry": "scripts/main.js"
+        }
+    ],
+    "capabilities": [ "script_eval" ],
+    "dependencies": [
+        {
+			"module_name": "@minecraft/server",
+			"version": "1.16.0-beta"
+		},
+		{
+			"module_name": "@minecraft/server-ui",
+			"version": "1.4.0-beta"
+		}
+    ]
+}
